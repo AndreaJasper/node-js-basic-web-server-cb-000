@@ -51,6 +51,17 @@ router.get('/messages', (request, response) => {
   let result = JSON.stringify(messages);
   
   response.setHeader('Content-Type', 'application/json; charset=utf-8');
+  
+  if (params.encrypt) {
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return bcrypt.has(result, 10, (error, hashed) => {
+      if (error) {
+        thorw new Error();
+      }
+      response.end(hashed);
+    });
+  }
+  response.end(result);
 });
 
 
