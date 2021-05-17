@@ -64,6 +64,45 @@ router.get('/messages', (request, response) => {
   response.end(result);
 });
 
+//Get a particular messagge
+router.get('/message/:id', (request, response) => {
+  let url    = urlParser.parse(request.url),
+      params = querystring.parse(url.query);
+
+  response.setHeader('Content-Type', 'application/json; charset=utf-8');
+
+  if (!request.params.id) {
+    response.statusCode = 400;
+    response.statusMessage = "No message id provided.";
+    response.end();
+    return;
+  }
+
+  const found = messages.find((message) => {
+    return message.id == request.params.id;
+  });
+
+  if (!found) {
+    response.statusCode = 404;
+    response.statusMessage = `Unable to find a message with id ${request.params.id}`;
+    response.end();
+    return;
+  }
+
+  const result = JSON.stringify(found);
+
+  if (params.encrypt) {
+    response.setHeader('Content-Type', 'text/plain; charset=utf-8');
+    return bcrypt.hash(result, 10, (error, hashed) => {
+      if (error) {
+        throw new Error();
+      }
+      response.end(hashed);
+    });
+  }
+
+  response.end(result);
+});
 
 
 
