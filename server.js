@@ -11,6 +11,17 @@ router.get('/', (request, response) => {
   response.end('Hello, World!');
 });
 
+
+
+let messages = [];
+
+router.post('/message', (request, response) => {
+  
+});
+
+
+
+
 const server = http.createServer((request, response) => {
   router(request, response, finalhandler(request, response));
 });
