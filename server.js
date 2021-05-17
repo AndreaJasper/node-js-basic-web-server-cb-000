@@ -8,7 +8,7 @@ const router = new Router();
 
 router.get('/', (request, response) => {
   // A good place to start!
-  response.end();
+  response.status(200).end();
 });
 
 const server = http.createServer((request, response) => {
